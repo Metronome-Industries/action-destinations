@@ -50,7 +50,7 @@ const action: ActionDefinition<Settings, Payload> = {
       type: 'datetime',
       label: 'timestamp',
       // TODO: copy
-      description: 'The timestamp Metronome should use for this event.',
+      description: 'The timestamp at which this event occurred.',
       required: true,
       default: {
         '@path': '$.timestamp'
