@@ -19,7 +19,7 @@ const action: ActionDefinition<Settings, Payload> = {
       type: 'string',
       label: 'transaction_id',
       // TODO: copy
-      description: 'The Metronome transaction id uniquely indentifies an event to ensure Metronome only processes each event once.',
+      description: 'The Metronome transaction ID uniquely identifies an event to ensure Metronome only processes each event once.',
       required: true,
       default: {
         '@path': '$.messageId'
