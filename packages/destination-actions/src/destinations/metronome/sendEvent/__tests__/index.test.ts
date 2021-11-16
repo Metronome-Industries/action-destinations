@@ -100,7 +100,6 @@ describe('Metronome.sendEvent', () => {
   })
 
   describe("processBatch", () => {
-    // TODO: depending on the todo about ensuring we only send 1<=x<=100 events, we may need to add more tests here
     it('should send an event', async () => {
 
       // create an array of 50 mock events with a variety of timestamp formats

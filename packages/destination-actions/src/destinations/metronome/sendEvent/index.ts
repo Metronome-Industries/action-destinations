@@ -18,7 +18,6 @@ const action: ActionDefinition<Settings, Payload> = {
     transaction_id: {
       type: 'string',
       label: 'transaction_id',
-      // TODO: copy
       description: 'The Metronome transaction ID uniquely identifies an event to ensure Metronome only processes each event once.',
       required: true,
       default: {
@@ -28,7 +27,6 @@ const action: ActionDefinition<Settings, Payload> = {
     customer_id: {
       type: 'string',
       label: 'customer_id',
-      // TODO: copy
       description: 'The Metronome customer ID or ingest alias this event should be associated with.',
       required: true,
       default: {
@@ -49,7 +47,6 @@ const action: ActionDefinition<Settings, Payload> = {
     timestamp: {
       type: 'datetime',
       label: 'timestamp',
-      // TODO: copy
       description: 'The timestamp at which this event occurred.',
       required: true,
       default: {
@@ -59,14 +56,12 @@ const action: ActionDefinition<Settings, Payload> = {
     event_type: {
       type: 'string',
       label: 'event_type',
-      // TODO: copy
       description: 'The Metronome event_type.',
       required: true,
     },
     properties: {
       type: 'object',
       label: 'properties',
-      // TODO: copy
       description: 'The Metronome properties object.',
       required: true,
     },
@@ -81,7 +76,11 @@ const action: ActionDefinition<Settings, Payload> = {
     })
   },
   performBatch: (request, { payload }) => {
-    // TODO: - ensure we don't have more than 100 events in a batch
+    // Segment says:
+    //   "The batch size for action destinations is currently hardcoded at <= 50 events.
+    //   We don’t have plans to change this but we could do so in the future  (we’d work with you to
+    //   ensure we don’t go over that 100+ limit without preparation on both Segment’s and Metronome’s end)"
+    // As such we don't need to worry about sending too many events here.
 
     // Auth is injected by extendRequest in the destination root
     return request('https://api.getmetronome.com/v1/ingest', {
