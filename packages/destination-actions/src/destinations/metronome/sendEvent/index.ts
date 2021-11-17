@@ -3,10 +3,9 @@ import type { Settings } from '../generated-types'
 import type { Payload } from './generated-types'
 
 function serializeEvent(event: Payload) {
-  // convert the timestamp into rfc3999
-  // TODO: we may want to enforce/drop non scalar property values here.
   return {
     ...event,
+    // convert the timestamp into rfc3999 format
     timestamp: new Date(event.timestamp).toISOString(),
   }
 }
@@ -75,19 +74,12 @@ const action: ActionDefinition<Settings, Payload> = {
       ]
     })
   },
-  performBatch: (request, { payload }) => {
-    // Segment says:
-    //   "The batch size for action destinations is currently hardcoded at <= 50 events.
-    //   We don’t have plans to change this but we could do so in the future  (we’d work with you to
-    //   ensure we don’t go over that 100+ limit without preparation on both Segment’s and Metronome’s end)"
-    // As such we don't need to worry about sending too many events here.
-
-    // Auth is injected by extendRequest in the destination root
-    return request('https://api.getmetronome.com/v1/ingest', {
-      method: 'post',
-      json: payload.map(serializeEvent)
-    })
-  },
+  // We'd like to be able to use performBatch, but we run into complexity when 1 event in the batch
+  // fails validation, causing the entire batch to fail. We've decided to just send 1 event at a time
+  // for now, which allows normal 4XX and 5XX semantics to be used and bubble errors up into the Segment
+  // UI. We can revisit this as needed.
+  //
+  // performBatch: (request, { payload }) => {},
 }
 
 export default action

@@ -2,7 +2,7 @@
 
 export interface Payload {
   /**
-   * The Metronome transaction id uniquely indentifies an event to ensure Metronome only processes each event once.
+   * The Metronome transaction ID uniquely identifies an event to ensure Metronome only processes each event once.
    */
   transaction_id: string
   /**
@@ -10,7 +10,7 @@ export interface Payload {
    */
   customer_id: string
   /**
-   * The timestamp Metronome should use for this event.
+   * The timestamp at which this event occurred.
    */
   timestamp: string | number
   /**
