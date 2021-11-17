@@ -1,4 +1,4 @@
-import type { DestinationDefinition } from '@segment/actions-core'
+import { defaultValues, DestinationDefinition } from '@segment/actions-core'
 import type { Settings } from './generated-types'
 
 import sendEvent from './sendEvent'
@@ -38,7 +38,15 @@ const destination: DestinationDefinition<Settings> = {
   },
   actions: {
     sendEvent
-  }
+  },
+  presets: [
+    {
+      name: 'Send track events to Metronome',
+      subscribe: 'type = "track"',
+      partnerAction: 'sendEvent',
+      mapping: defaultValues(sendEvent.fields)
+    },
+  ]
 }
 
 export default destination
