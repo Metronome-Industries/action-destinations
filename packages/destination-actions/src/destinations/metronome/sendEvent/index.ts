@@ -1,12 +1,22 @@
 import type { ActionDefinition } from '@segment/actions-core'
 import type { Settings } from '../generated-types'
 import type { Payload } from './generated-types'
+import dayjs from '../../../lib/dayjs'
 
 function serializeEvent(event: Payload) {
   return {
     ...event,
-    // convert the timestamp into rfc3999 format
-    timestamp: new Date(event.timestamp).toISOString(),
+    // convert the timestamp into rfc3999 format. We use dayjs because Segmemt promises
+    //   "By using the datetime type, you can be sure that that timestamp value passed
+    //    to your perform method will be a valid datetime value that will be parsable by dayjs.
+    // We use dayjs.utc mostly to help ensure consistent test cases. "dayjs("2021-01-01").toISOString()"
+    // will otherwise use the local time offset, which leads to inconsistent tests. It's not required
+    // for the Metronome API, in fact just doing new Date(event.timestamp).toISOString() should work just
+    // fine here.
+    //
+    // Ideally Segment would just pass any date-time values as Date objects not have this loose
+    // coupling to dayjs parse formats but, this is fine for now.
+    timestamp: dayjs.utc(event.timestamp).toISOString(),
   }
 }
 
