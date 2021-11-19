@@ -43,7 +43,7 @@ describe('Metronome.sendEvent', () => {
       expect(responses[0].options.json).toEqual([
         {
           event_type: event.event,
-          customer_id: event.groupId || event.userId || event.anonymousId,
+          customer_id: event?.context?.groupId ?? event.userId ?? event.anonymousId,
           properties: event.context,
           transaction_id: event.messageId,
           timestamp: new Date(event.timestamp ?? "").toISOString(),
@@ -90,7 +90,7 @@ describe('Metronome.sendEvent', () => {
       expect(responses[0].options.json).toEqual([
         {
           event_type: event.event,
-          customer_id: event.groupId || event.userId || event.anonymousId,
+          customer_id: event?.context?.groupId ?? event.userId ?? event.anonymousId,
           properties: event.context,
           transaction_id: event.messageId,
           timestamp: "2021-01-01T00:00:00.000Z",
@@ -139,7 +139,7 @@ describe('Metronome.sendEvent', () => {
       expect(responses[0].options.json).toEqual([
         {
           event_type: event.event,
-          customer_id: event.groupId || event.userId || event.anonymousId,
+          customer_id: event?.context?.groupId ?? event.userId ?? event.anonymousId,
           properties: event.context,
           transaction_id: event.messageId,
           timestamp: "2021-07-10T05:37:11.000Z",
